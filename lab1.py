@@ -1,34 +1,42 @@
-import cv2 
+import cv2 as cv
+import numpy as np
+from matplotlib import pyplot as plt
 
-# 1. Đọc ảnh
-img = cv2.imread('test.jpg')
+img = cv.imread('messi5.jpg')
+assert img is not None, "Không thể đọc ảnh"
 
-if img is None:
-    print("Không tìm thấy ảnh!")
-    exit()
+px = img[100, 100]
+print("Pixel tại (100,100):", px)
+
+blue = img[100, 100, 0]
+print("Kênh blue:", blue)
+img[100, 100] = [255, 255, 255]
 
 print("Shape:", img.shape)
 print("Size:", img.size)
-print("Datatype:", img.dtype)
+print("Dtype:", img.dtype)
 
-cv2.imshow('Original Image', img)
+ball = img[280:340, 330:390]
+img[273:333, 100:160] = ball
 
-px = img[100, 100]
-print("Pixel at (100,100):", px)
+b, g, r = cv.split(img)
+img_merge = cv.merge((b, g, r))
 
-img[100, 100] = [255, 0, 0]
+img[:, :, 2] = 0
 
-roi = img[100:300, 200:400]
-img[0:200, 0:200] = roi
+BLUE = [255, 0, 0]
 
-b, g, r = cv2.split(img)
+replicate = cv.copyMakeBorder(img, 10, 10, 10, 10, cv.BORDER_REPLICATE)
+reflect = cv.copyMakeBorder(img, 10, 10, 10, 10, cv.BORDER_REFLECT)
+reflect101 = cv.copyMakeBorder(img, 10, 10, 10, 10, cv.BORDER_REFLECT_101)
+wrap = cv.copyMakeBorder(img, 10, 10, 10, 10, cv.BORDER_WRAP)
+constant = cv.copyMakeBorder(img, 10, 10, 10, 10, cv.BORDER_CONSTANT, value=BLUE)
 
-cv2.imshow("Blue Channel", b)
-cv2.imshow("Green Channel", g)
-cv2.imshow("Red Channel", r)
+plt.subplot(231), plt.imshow(cv.cvtColor(img, cv.COLOR_BGR2RGB)), plt.title('Original')
+plt.subplot(232), plt.imshow(cv.cvtColor(replicate, cv.COLOR_BGR2RGB)), plt.title('Replicate')
+plt.subplot(233), plt.imshow(cv.cvtColor(reflect, cv.COLOR_BGR2RGB)), plt.title('Reflect')
+plt.subplot(234), plt.imshow(cv.cvtColor(reflect101, cv.COLOR_BGR2RGB)), plt.title('Reflect101')
+plt.subplot(235), plt.imshow(cv.cvtColor(wrap, cv.COLOR_BGR2RGB)), plt.title('Wrap')
+plt.subplot(236), plt.imshow(cv.cvtColor(constant, cv.COLOR_BGR2RGB)), plt.title('Constant')
 
-img2 = cv2.merge((b, g, r))
-cv2.imshow("Merged Image", img2)
-
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+plt.show()
