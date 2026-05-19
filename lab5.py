@@ -3,8 +3,6 @@ import numpy as np
 import os
 import glob
 
-# --- CÁC HÀM XỬ LÝ VÀ TÍNH TOÁN ---
-
 def imread_unicode(path):
     """Đọc ảnh màu từ đường dẫn chứa tiếng Việt có dấu"""
     try:
@@ -68,8 +66,8 @@ def compare_features(feat1, feat2):
 # --- CHƯƠNG TRÌNH CHÍNH ---
 
 # 1. Cấu hình đường dẫn
-path_query = r'D:\THỊ GIÁC MÁY TÍNH\query.jpg'  
-path_database = r'D:\THỊ GIÁC MÁY TÍNH\DATABASE'
+path_query = r'E:\THI-GIAC-MAY-TINH\query.jpg'  
+path_database = r'E:\THI-GIAC-MAY-TINH\DATABASE'
 
 # 2. Xử lý ảnh mẫu (Query)
 img_q = imread_unicode(path_query)
